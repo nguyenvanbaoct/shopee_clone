@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path')
+// const path = require('path')
 module.exports = {
   extends: [
     // Dùng các rule mặc định từ các plugin mà chúng ta đã cài.
@@ -24,7 +24,8 @@ module.exports = {
     // Nói ESLint cách xử lý các import
     'import/resolver': {
       node: {
-        paths: [path.resolve(__dirname)],
+        // paths: [path.resolve(__dirname)],
+        paths: ['.'],
         extensions: ['.js', '.jsx', '.ts', '.tsx']
       }
     }
