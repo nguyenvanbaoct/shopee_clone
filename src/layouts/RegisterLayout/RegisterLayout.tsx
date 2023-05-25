@@ -7,11 +7,10 @@ interface Props {
 
 export default function RegisterLayout({ children }: Props) {
   return (
-    <div>
-      RegisterLayout
+    <>
       <RegisterHeader />
       {children}
       <Footer />
-    </div>
+    </>
   )
 }
