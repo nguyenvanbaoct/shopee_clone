@@ -1,15 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'src/apis/auth.api'
+import Button from 'src/components/Button'
 import Input from 'src/components/Input'
-import { ResponseApi } from 'src/types/utils.type'
+import path from 'src/constants/path'
+import { AppContext } from 'src/contexts/app.context'
+import { ErrorResponse } from 'src/types/utils.type'
 import { schema, Schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 const loginSchema = schema.omit(['confirm_password'])
 export default function Login() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const navigata = useNavigate()
   const {
     register,
     setError,
@@ -26,10 +32,12 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (data) => {
-        console.log(data)
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+        navigata('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<Schema, 'confirm_password'>>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<Schema, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -79,13 +87,18 @@ export default function Login() {
                 errorMessage={errors.password?.message}
               />
               <div className='mt-2'>
-                <button className='w-full bg-orange px-2 py-4 text-center text-sm uppercase text-white hover:bg-opacity-90'>
+                <Button
+                  type='submit'
+                  className='flex w-full content-center justify-center bg-orange px-2 py-4 text-center text-sm uppercase text-white hover:bg-opacity-90'
+                  isLoading={loginMutation.isLoading}
+                  disabled={loginMutation.isLoading}
+                >
                   ĐĂNG NHẬP
-                </button>
+                </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
-                <Link className='ml-1 text-red-600' to='/register'>
+                <Link className='ml-1 text-red-600' to={path.register}>
                   Đăng ký
                 </Link>
               </div>
