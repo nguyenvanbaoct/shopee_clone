@@ -13,6 +13,9 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password'])
+
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigata = useNavigate()
@@ -21,8 +24,8 @@ export default function Register() {
     handleSubmit,
     setError,
     formState: { errors }
-  } = useForm<Schema>({
-    resolver: yupResolver(schema)
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchema)
   })
 
   const registerAccountMutation = useMutation({
@@ -42,7 +45,7 @@ export default function Register() {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
-              setError(key as keyof Omit<Schema, 'confirm_password'>, {
+              setError(key as keyof Omit<FormData, 'confirm_password'>, {
                 message: formError[key as keyof Omit<Schema, 'confirm_password'>],
                 type: 'Server'
               })

@@ -1,18 +1,52 @@
-import { Link, createSearchParams } from 'react-router-dom'
+import { useForm, Controller } from 'react-hook-form'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
-import Input from 'src/components/Input'
 import path from 'src/constants/path'
 import { QueryConfig } from '../ProductList'
 import { Category } from 'src/types/category.type'
 import classNames from 'classnames'
+import InputNumber from 'src/components/InputNumber'
+import { Schema, schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUndefinedField } from 'src/types/utils.type'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
+type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
+
+const priceSchema = schema.pick(['price_max', 'price_min'])
+
 export default function AsideFilter({ categories, queryConfig }: Props) {
+  const navigate = useNavigate()
+  const {
+    control,
+    trigger,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      price_max: '',
+      price_min: ''
+    },
+    resolver: yupResolver(priceSchema),
+    shouldFocusError: false
+  })
   const { category } = queryConfig
+
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    })
+  })
+
   return (
     <div className='py-4 capitalize'>
       <Link
@@ -88,14 +122,27 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
         <div>Khoản giá</div>
-        <form className='mt-2'>
+        <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            <Input
-              placeholder='₫ TỪ'
-              type='text'
-              className='grow'
-              name='from'
-              classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+            <Controller
+              control={control}
+              name='price_min'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    placeholder='₫ TỪ'
+                    classNameError='hidden'
+                    type='text'
+                    className='grow'
+                    {...field}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_max')
+                    }}
+                    classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                  />
+                )
+              }}
             />
             <div className='mx-2 mt-2 shrink-0'>
               <svg
@@ -109,14 +156,28 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
                 <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
               </svg>
             </div>
-            <Input
-              placeholder='₫ ĐẾN'
-              type='text'
-              className='grow'
-              name='from'
-              classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+            <Controller
+              control={control}
+              name='price_max'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    placeholder='₫ ĐẾN'
+                    type='text'
+                    classNameError='hidden'
+                    className='grow'
+                    {...field}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_min')
+                    }}
+                    classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                  />
+                )
+              }}
             />
           </div>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>{errors.price_min?.message}</div>
           <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
             Áp dụng
           </Button>
