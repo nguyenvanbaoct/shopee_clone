@@ -1,53 +1,161 @@
-export default function SortProductList() {
+import { sortBy, order as orderConstant } from 'src/constants/product'
+import { QueryConfig } from '../ProductList'
+import { ProductListConfig } from 'src/types/product.type'
+import classNames from 'classnames'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import path from 'src/constants/path'
+import { omit } from 'lodash'
+
+interface Props {
+  queryConfig: QueryConfig
+  pageSize: number
+}
+export default function SortProductList({ pageSize, queryConfig }: Props) {
+  const page = Number(queryConfig.page)
+  const { sort_by = sortBy.createdAt, order } = queryConfig
+  const navigate = useNavigate()
+
+  const isActiveSortBy = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
+    return sort_by === sortByValue
+  }
+
+  const handleSort = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            sort_by: sortByValue
+          },
+          ['order']
+        )
+      ).toString()
+    })
+  }
+
+  const handlePriceOrder = (orderValue: Exclude<ProductListConfig['order'], undefined>) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        sort_by: sortBy.price,
+        order: orderValue
+      }).toString()
+    })
+  }
+
   return (
     <div className='bg-gray-300/40 px-3 py-4'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div className='flex flex-wrap items-center gap-2'>
           <div>Sắp xếp theo</div>
-          <button className='h-8 bg-orange px-4 text-center text-sm capitalize text-white '>Phổ biến</button>
-          <button className='h-8 bg-white px-4 text-center text-sm capitalize text-black '>Mới nhất</button>
-          <button className='h-8 bg-white px-4 text-center text-sm capitalize text-black '>Bán chạy</button>
-          <select
-            className='h-8 cursor-pointer bg-white px-4 text-left text-sm capitalize text-black outline-none'
-            defaultValue=''
+          <button
+            className={classNames('h-8 px-4 text-center text-sm capitalize  ', {
+              'bg-orange text-white hover:bg-orange/80': isActiveSortBy(sortBy.view),
+              'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.view)
+            })}
+            onClick={() => {
+              handleSort(sortBy.view)
+            }}
           >
-            <option value='' disabled>
+            Phổ biến
+          </button>
+          <button
+            className={classNames('h-8 px-4 text-center text-sm capitalize  ', {
+              'bg-orange text-white hover:bg-orange/80': isActiveSortBy(sortBy.createdAt),
+              'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.createdAt)
+            })}
+            onClick={() => {
+              handleSort(sortBy.createdAt)
+            }}
+          >
+            Mới nhất
+          </button>
+          <button
+            className={classNames('h-8 px-4 text-center text-sm capitalize  ', {
+              'bg-orange text-white hover:bg-orange/80': isActiveSortBy(sortBy.sold),
+              'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.sold)
+            })}
+            onClick={() => {
+              handleSort(sortBy.sold)
+            }}
+          >
+            Bán chạy
+          </button>
+          <select
+            className={classNames('h-8 cursor-pointer  px-4 text-left text-sm capitalize outline-none', {
+              'bg-orange text-white hover:bg-orange/80': isActiveSortBy(sortBy.price),
+              'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.price)
+            })}
+            value={order || ''}
+            onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
+          >
+            <option value='' disabled className='bg-white text-black'>
               Giá
             </option>
-            <option value='price:asc'>Giá: Thấp đến Cao</option>
-            <option value='price:desc'>Giá: Cao đến Thấp</option>
+            <option value={orderConstant.asc} className='bg-white text-black'>
+              Giá: Thấp đến Cao
+            </option>
+            <option value={orderConstant.desc} className='bg-white text-black'>
+              Giá: Cao đến Thấp
+            </option>
           </select>
         </div>
         <div className='flex items-center'>
           <div>
-            <span className='text-orange'>1</span>
-            <span>/2</span>
+            <span className='text-orange'>{page}</span>
+            <span>/{pageSize}</span>
           </div>
-          <div className='ml-2'>
-            <button className='h-8 cursor-not-allowed rounded-tl-sm bg-white/60 px-3 shadow hover:bg-slate-100'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='h-3 w-3'
+          <div className='ml-2 flex'>
+            {page === 1 ? (
+              <span className='h-8 cursor-not-allowed rounded border bg-gray-400/20 px-3 py-3 '>
+                <svg enableBackground='new 0 0 11 11' viewBox='0 0 11 11' x={0} y={0} className='h-2 w-2 fill-gray-600'>
+                  <g>
+                    <path d='m8.5 11c-.1 0-.2 0-.3-.1l-6-5c-.1-.1-.2-.3-.2-.4s.1-.3.2-.4l6-5c .2-.2.5-.1.7.1s.1.5-.1.7l-5.5 4.6 5.5 4.6c.2.2.2.5.1.7-.1.1-.3.2-.4.2z' />
+                  </g>
+                </svg>
+              </span>
+            ) : (
+              <Link
+                to={{
+                  pathname: path.home,
+                  search: createSearchParams({
+                    ...queryConfig,
+                    page: (page - 1).toString()
+                  }).toString()
+                }}
+                className='h-8 rounded border bg-white px-3 py-3 '
               >
-                <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
-              </svg>
-            </button>
-            <button className='h-8  rounded-tr-sm bg-white px-3 shadow hover:bg-slate-100'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='h-3 w-3'
+                <svg enableBackground='new 0 0 11 11' viewBox='0 0 11 11' x={0} y={0} className='h-2 w-2 fill-gray-600'>
+                  <g>
+                    <path d='m8.5 11c-.1 0-.2 0-.3-.1l-6-5c-.1-.1-.2-.3-.2-.4s.1-.3.2-.4l6-5c .2-.2.5-.1.7.1s.1.5-.1.7l-5.5 4.6 5.5 4.6c.2.2.2.5.1.7-.1.1-.3.2-.4.2z' />
+                  </g>
+                </svg>
+              </Link>
+            )}
+            {page === pageSize ? (
+              <span className='h-8 cursor-not-allowed rounded border bg-gray-400/20 px-3 py-3 '>
+                <svg enableBackground='new 0 0 11 11' viewBox='0 0 11 11' x={0} y={0} className='h-2 w-2 fill-gray-600'>
+                  <path d='m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z' />
+                </svg>
+              </span>
+            ) : (
+              <Link
+                to={{
+                  pathname: path.home,
+                  search: createSearchParams({
+                    ...queryConfig,
+                    page: (page + 1).toString()
+                  }).toString()
+                }}
+                className='h-8 rounded border bg-white px-3 py-3 '
               >
-                <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
-              </svg>
-            </button>
+                <svg enableBackground='new 0 0 11 11' viewBox='0 0 11 11' x={0} y={0} className='h-2 w-2 fill-gray-600'>
+                  <path d='m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z' />
+                </svg>
+              </Link>
+            )}
           </div>
         </div>
       </div>
