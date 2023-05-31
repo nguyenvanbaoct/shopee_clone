@@ -1,5 +1,5 @@
 import useQueryParams from 'src/hooks/useQueryParam'
-import AsideFilter from './AsideFilter'
+import AsideFilter from './components/AsideFilter'
 import Product from './Product'
 import SortProductList from './SortProductList'
 import { useQuery } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export default function ProductList() {
   const queryConfig: QueryConfig = omitBy(
     {
       page: queryParams.page || '1',
-      limit: queryParams.limit || '15',
+      limit: queryParams.limit || '20',
       sort_by: queryParams.sort_by,
       exclude: queryParams.exclude,
       name: queryParams.name,
