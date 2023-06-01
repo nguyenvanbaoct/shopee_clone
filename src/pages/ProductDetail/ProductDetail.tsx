@@ -1,15 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
-import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/Product'
+import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/apis/purchase.api'
+import { purchasesStatus } from 'src/constants/purchase'
+import { toast } from 'react-toastify'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
+  const [buyCount, setBuyCount] = useState(1)
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
 
@@ -30,6 +35,7 @@ export default function ProductDetail() {
     enabled: Boolean(product),
     staleTime: 3 * 60 * 1000
   })
+  const addToCartMutation = useMutation(purchaseApi.addToCart)
   const [activeImage, setActiveImage] = useState('')
   const imageRef = useRef<HTMLImageElement>(null)
 
@@ -75,6 +81,28 @@ export default function ProductDetail() {
   }
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style')
+  }
+
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
+  }
+
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      {
+        buy_count: buyCount,
+        product_id: product?._id as string
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, {
+            position: 'top-center',
+            autoClose: 800
+          })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        }
+      }
+    )
   }
 
   if (!product) return null
@@ -168,42 +196,20 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <div className='ml-10 flex items-center'>
-                  <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 12h-15' />
-                    </svg>
-                  </button>
-                  <InputNumber
-                    value={1}
-                    className=''
-                    classNameError='hidden'
-                    classNameInput='h-8 w-14 border-b border-t border-gray-300 p-1 text-center outline-none'
-                  />
-                  <button className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-                    </svg>
-                  </button>
-                </div>
+                <QuantityController
+                  onDecrease={handleBuyCount}
+                  onIncrease={handleBuyCount}
+                  onType={handleBuyCount}
+                  value={buyCount}
+                  max={product.quantity}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sẵn</div>
               </div>
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                <button
+                  onClick={addToCart}
+                  className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'
