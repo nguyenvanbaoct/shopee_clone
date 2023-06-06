@@ -13,7 +13,7 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 
-type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password' | 'name'>
 const registerSchema = schema.pick(['email', 'password'])
 
 export default function Register() {

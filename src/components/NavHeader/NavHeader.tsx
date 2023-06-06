@@ -6,6 +6,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { purchasesStatus } from 'src/constants/purchase'
+import { getAvatarUrl } from 'src/utils/utils'
 
 export default function NavHeader() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -68,7 +69,7 @@ export default function NavHeader() {
               <Link to={path.profile} className='block w-full px-4 py-3 text-left text-sm hover:text-cyan-400'>
                 Tài Khoản Của Tôi
               </Link>
-              <Link to='/' className='block w-full px-4 py-3 text-left text-sm hover:text-cyan-400'>
+              <Link to={path.historyPurchase} className='block w-full px-4 py-3 text-left text-sm hover:text-cyan-400'>
                 Đơn Mua
               </Link>
               <button onClick={handleLogout} className='block w-full px-4 py-3 text-left text-sm hover:text-cyan-400'>
@@ -78,13 +79,9 @@ export default function NavHeader() {
           }
         >
           <div className='h-5 w-5 flex-shrink-0'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/sg-11134004-7qvdj-lha93bqyrfnba0_tn'
-              alt='avatar'
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
-          <div className='ml-2'>{profile?.email}</div>
+          <div className='ml-2'>{profile?.name || profile?.email}</div>
         </Popover>
       )}
       {!isAuthenticated && (
