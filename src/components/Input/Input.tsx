@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -19,6 +19,7 @@ export default function Input({
   ...rest
 }: Props) {
   const registerResult = register && name ? register(name) : null
+
   return (
     <div className={className}>
       <input {...rest} className={classNameInput} {...registerResult} />
