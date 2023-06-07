@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import path from 'src/constants/path'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Schema, schema } from 'src/utils/rules'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
 export default function useSearchProducts() {
