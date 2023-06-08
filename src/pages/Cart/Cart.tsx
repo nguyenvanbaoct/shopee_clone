@@ -13,8 +13,10 @@ import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 import noproduct from 'src/assets/images/no-product.png'
+import { useTranslation } from 'react-i18next'
 
 export default function Cart() {
+  const { t } = useTranslation(['product'])
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
@@ -148,15 +150,15 @@ export default function Cart() {
                           className='h-5 w-5 accent-orange'
                         />
                       </div>
-                      <div className='flex-grow text-black'>Sản phẩm</div>
+                      <div className='flex-grow text-black'>{t('product')}</div>
                     </div>
                   </div>
                   <div className='col-span-6'>
                     <div className='grid grid-cols-5 items-center text-center'>
-                      <div className='col-span-2'>Đơn giá</div>
-                      <div className='col-span-1'>Số lượng</div>
-                      <div className='col-span-1'>Số tiền</div>
-                      <div className='col-span-1'>Thao tác</div>
+                      <div className='col-span-2'>{t('unit price')}</div>
+                      <div className='col-span-1'>{t('quantily')}</div>
+                      <div className='col-span-1'>{t('total price')}</div>
+                      <div className='col-span-1'>{t('actions')}</div>
                     </div>
                   </div>
                 </div>
@@ -246,7 +248,7 @@ export default function Cart() {
                                   className='bg-none text-black transition-colors hover:text-orange'
                                   onClick={handleDelete(index)}
                                 >
-                                  Xoá
+                                  {t('delete')}
                                 </button>
                               </div>
                             </div>
@@ -269,20 +271,22 @@ export default function Cart() {
                   />
                 </div>
                 <button onClick={handleCheckAll} className='mx-3 border-none bg-none'>
-                  Chọn tất cả ({extendedPurchases.length})
+                  {t('select all')} ({extendedPurchases.length})
                 </button>
                 <button className='mx-3 border-none bg-none' onClick={handleDeleteManyPurchases}>
-                  Xoá
+                  {t('delete')}
                 </button>
               </div>
               <div className='flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
                 <div>
                   <div className='flex items-center sm:justify-end'>
-                    <div>Tổng thanh toán({checkedPurchasesCount} Sản phẩm):</div>
+                    <div>
+                      {t('total')}({checkedPurchasesCount} {t('product')}):
+                    </div>
                     <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalChekedPurchasePrice)}</div>
                   </div>
                   <div className='flex items-center text-sm sm:justify-end'>
-                    <div className='text-gray-500'>Tiết kiệm</div>
+                    <div className='text-gray-500'>{t('saved')}</div>
                     <div className='ml-6 text-orange'>₫{formatCurrency(totalChekedPurchaseSavingPrice)}</div>
                   </div>
                 </div>
@@ -291,7 +295,7 @@ export default function Cart() {
                   disabled={buyProductsMutation.isLoading}
                   className='mt-5 flex h-10 w-52 items-center justify-center bg-orange text-sm uppercase text-white hover:bg-orange/80 sm:ml-4 sm:mt-0'
                 >
-                  Mua hàng
+                  {t('checkout')}
                 </Button>
               </div>
             </div>
@@ -300,13 +304,13 @@ export default function Cart() {
           <div className='tex-center'>
             <img src={noproduct} alt='no product' className='mx-auto h-24 w-24' />
 
-            <div className='mt-5 text-center font-bold text-gray-400'>Giỏ hàng của bạn còn trống</div>
+            <div className='mt-5 text-center font-bold text-gray-400'>{t('no products yet')}</div>
             <div className='mt-5 text-center'>
               <Link
                 to={path.home}
                 className='mt-5 rounded-sm bg-orange px-8 py-2 uppercase text-white transition-all hover:bg-orange/80'
               >
-                MUA NGAY
+                {t('buy now')}
               </Link>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
@@ -58,6 +59,10 @@ export default function Login() {
 
   return (
     <div className='bg-orange'>
+      <Helmet>
+        <title>Đăng Nhập | Shopee clone</title>
+        <meta name='description' content='Đăng nhập vào Shopee clone' />
+      </Helmet>
       <div className='container '>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='text-center text-white lg:col-start-1 lg:col-end-4'>

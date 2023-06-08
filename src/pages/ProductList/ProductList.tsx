@@ -7,6 +7,7 @@ import Pagination from 'src/components/Pagination'
 import { ProductListConfig } from 'src/types/product.type'
 import categoryApi from 'src/apis/category.api'
 import useQueryConfig from 'src/hooks/useQueryConfig'
+import { Helmet } from 'react-helmet-async'
 
 export default function ProductList() {
   const queryConfig = useQueryConfig()
@@ -29,13 +30,17 @@ export default function ProductList() {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>Trang chủ | Shopee clone</title>
+        <meta name='description' content='Shopee clone' />
+      </Helmet>
       <div className='container'>
         {productsData && (
-          <div className='grid grid-cols-12 gap-6'>
-            <div className='col-span-3'>
+          <div className='grid gap-6 lg:grid-cols-12'>
+            <div className='xs:hidden lg:col-span-3 lg:block'>
               <AsideFilter queryConfig={queryConfig} categories={categoriesData?.data.data || []} />
             </div>
-            <div className='col-span-9'>
+            <div className='lg:col-span-9'>
               <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {productsData.data.data.products.map((product) => (
