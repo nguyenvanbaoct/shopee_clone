@@ -36,7 +36,7 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='xs:col-span-7 sm:col-span-9' onSubmit={onSubmitSearch}>
+          <form className='xs:col-span-8 sm:col-span-9' onSubmit={onSubmitSearch}>
             <div className='flex rounded-sm bg-white p-1'>
               <input
                 type='text'
@@ -44,7 +44,7 @@ export default function Header() {
                 className='flex-grow border-none bg-transparent px-1  text-black outline-none'
                 placeholder='FREESHIP ĐƠN TỪ 0Đ'
               />
-              <button className='flex-shrink-0 rounded-sm bg-orange hover:opacity-90  xs:px-1  sm:px-5 sm:py-2'>
+              <button className='flex-shrink-0 rounded-sm bg-orange hover:opacity-90  xs:hidden  xs:px-1 sm:block sm:px-5 sm:py-2'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -62,7 +62,7 @@ export default function Header() {
               </button>
             </div>
           </form>
-          <div className='justify-self-end xs:col-span-2 sm:col-span-1 '>
+          <div className='justify-self-end xs:col-span-1 sm:col-span-1 '>
             <Popover
               renderPopover={
                 <div className='max-w-[400px] rounded-sm border-gray-200 bg-white text-sm shadow-md '>
