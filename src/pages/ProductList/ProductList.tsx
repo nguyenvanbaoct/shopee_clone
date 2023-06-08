@@ -36,13 +36,13 @@ export default function ProductList() {
       </Helmet>
       <div className='container'>
         {productsData && (
-          <div className='grid gap-6 lg:grid-cols-12'>
-            <div className='xs:hidden lg:col-span-3 lg:block'>
+          <div className='grid gap-6 md:grid-cols-12'>
+            <div className='xs:hidden md:col-span-3 md:block'>
               <AsideFilter queryConfig={queryConfig} categories={categoriesData?.data.data || []} />
             </div>
-            <div className='lg:col-span-9'>
+            <div className='md:col-span-9'>
               <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
-              <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+              <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-5'>
                 {productsData.data.data.products.map((product) => (
                   <div className='col-span-1' key={product._id}>
                     <Product product={product} />

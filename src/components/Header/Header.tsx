@@ -41,10 +41,10 @@ export default function Header() {
               <input
                 type='text'
                 {...register('name')}
-                className='flex-grow border-none bg-transparent px-3  text-black outline-none'
+                className='flex-grow border-none bg-transparent px-1  text-black outline-none'
                 placeholder='FREESHIP ĐƠN TỪ 0Đ'
               />
-              <button className='flex-shrink-0 rounded-sm bg-orange hover:opacity-90  xs:px-1 sm:px-5 sm:py-2'>
+              <button className='flex-shrink-0 rounded-sm bg-orange hover:opacity-90  xs:px-1  sm:px-5 sm:py-2'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
