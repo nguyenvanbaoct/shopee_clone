@@ -1,0 +1,23 @@
+{
+  "edit profile": "Sửa hồ sơ",
+  "change password": "Đổi mật khẩu",
+  "my profile": "Hồ sơ của tôi",
+  "manage and protect your account": "Quản lý và bảo vệ tài khoản của bạn",
+  "name": "Tên",
+  "phone number": "Số điện thoại",
+  "address": "Địa chỉ",
+  "date of birth": "Ngày sinh",
+  "select image": "Chọn ảnh",
+  "file size": "Dung lượng file: tối đa 1 MB",
+  "file extension": "Định dạng file: .JPEG, .PNG",
+  "current password": "Mật khẩu hiện tại",
+  "new password": "Mật khẩu mới",
+  "confirm password": "Xác nhận mật khẩu",
+  "all": "Tất cả",
+  "to pay": "Chờ thanh toán",
+  "to ship": "Chờ gửi hàng",
+  "to receive": "Đang giao hàng",
+  "completed": "Đã hoàn thành",
+  "canceled": "Đã hủy",
+  "save": "Lưu"
+}

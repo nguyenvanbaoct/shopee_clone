@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import authApi from 'src/apis/auth.api'
 import Button from 'src/components/Button'
@@ -16,6 +17,7 @@ type FormData = Pick<Schema, 'email' | 'password'>
 
 const loginSchema = schema.pick(['email', 'password'])
 export default function Login() {
+  const { t } = useTranslation(['home'])
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigata = useNavigate()
   const {
@@ -71,7 +73,7 @@ export default function Login() {
           </div>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
-              <div className='text-2xl'>Đăng nhập</div>
+              <div className='text-2xl'>{t('header.login')}</div>
               <Input
                 className='mt-8'
                 name='email'
@@ -95,13 +97,13 @@ export default function Login() {
                   isLoading={loginMutation.isLoading}
                   disabled={loginMutation.isLoading}
                 >
-                  ĐĂNG NHẬP
+                  {t('header.login')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
-                <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
+                <span className='text-gray-400'>{t('header.new to shopee')}</span>
                 <Link className='ml-1 text-red-600' to={path.register}>
-                  Đăng ký
+                  {t('header.sign up')}
                 </Link>
               </div>
             </form>

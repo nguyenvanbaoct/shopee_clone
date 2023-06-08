@@ -1,0 +1,31 @@
+{
+  "aside filter": {
+    "search filter": "Bộ lọc tìm kiếm",
+    "all categories": "Tất cả danh mục",
+    "price range": "Khoản giá",
+    "min": "Từ",
+    "max": "Đến",
+    "apply": "Áp dụng",
+    "rating": "Đánh giá",
+    "& Up": "Trở lên",
+    "clear all": "Xoá tất cả"
+  },
+  "sort product": {
+    "sort by": "Sắp xếp theo",
+    "popular": "Phổ biến",
+    "latest": "Mới nhất",
+    "top sales": "Bán chạy",
+    "price": "Giá",
+    "low to high": "Giá: thấp đến cao",
+    "high to low": "Giá: cao đến thấp"
+  },
+  "header": {
+    "sign up": "Đăng Ký",
+    "login": "Đăng Nhập",
+    "logout": "Đăng xuất",
+    "new to shopee": "Bạn mới biết đến Shopee?",
+    "have an account": "Bạn đã có tài khoản?",
+    "my account": "Tài khoản của tôi",
+    "my purchase": "Đơn mua"
+  }
+}

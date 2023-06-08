@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { getAvatarUrl } from 'src/utils/utils'
 
 export default function UserSideNav() {
+  const { t } = useTranslation(['profile', 'home'])
   const { profile } = useContext(AppContext)
   return (
     <div>
@@ -32,7 +34,7 @@ export default function UserSideNav() {
                 fillRule='evenodd'
               />
             </svg>
-            <span className='text-sm'>Sửa hồ sơ</span>
+            <span className='text-sm'>{t('edit profile')}</span>
           </NavLink>
         </div>
       </div>
@@ -61,7 +63,7 @@ export default function UserSideNav() {
                 d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
               />
             </svg>
-            <span className='text-md ml-2'>Tài khoản của tôi</span>
+            <span className='text-md ml-2'>{t('my profile')}</span>
           </div>
         </NavLink>
         <NavLink
@@ -90,7 +92,7 @@ export default function UserSideNav() {
               <path d='M14 9l-4-4-4 4' />
             </svg>
 
-            <span className='text-md ml-2'>Đổi mật khẩu</span>
+            <span className='text-md ml-2'>{t('change password')}</span>
           </div>
         </NavLink>
         <NavLink
@@ -118,7 +120,7 @@ export default function UserSideNav() {
               />
             </svg>
 
-            <span className='text-md ml-2'>Đơn mua</span>
+            <span className='text-md ml-2'>{t('home:header.my purchase')}</span>
           </div>
         </NavLink>
       </div>

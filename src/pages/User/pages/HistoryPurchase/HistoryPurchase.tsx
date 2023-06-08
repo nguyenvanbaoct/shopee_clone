@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
 import path from 'src/constants/path'
@@ -8,16 +9,8 @@ import useQueryParams from 'src/hooks/useQueryParam'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
-const purchaseTabs = [
-  { status: purchasesStatus.all, name: 'Tất cả' },
-  { status: purchasesStatus.waitForCofirmation, name: 'Chờ xác nhận' },
-  { status: purchasesStatus.waitForGetting, name: 'Chờ lấy hàng' },
-  { status: purchasesStatus.inProgress, name: 'Đang giao' },
-  { status: purchasesStatus.delivered, name: 'Đã giao' },
-  { status: purchasesStatus.cancelled, name: 'Đã huỷ' }
-]
-
 export default function HistoryPurchase() {
+  const { t } = useTranslation(['profile'])
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.all
   const { data: purchasesInCartData } = useQuery({
@@ -25,6 +18,14 @@ export default function HistoryPurchase() {
     queryFn: () => purchaseApi.getPusrchases({ status: status as PurchaseListStatus })
   })
   const purchasesInCart = purchasesInCartData?.data.data
+  const purchaseTabs = [
+    { status: purchasesStatus.all, name: `${t('all')}` },
+    { status: purchasesStatus.waitForCofirmation, name: `${t('to pay')}` },
+    { status: purchasesStatus.waitForGetting, name: `${t('to ship')}` },
+    { status: purchasesStatus.inProgress, name: `${t('to receive')}` },
+    { status: purchasesStatus.delivered, name: `${t('completed')}` },
+    { status: purchasesStatus.cancelled, name: `${t('canceled')}` }
+  ]
   const purchaseTabsLink = purchaseTabs.map((tab) => (
     <Link
       key={tab.status}

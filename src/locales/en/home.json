@@ -1,0 +1,31 @@
+{
+  "aside filter": {
+    "search filter": "Search cilter",
+    "all categories": "All categories",
+    "price range": "Price range",
+    "min": "Min",
+    "max": "Max",
+    "apply": "Apply",
+    "rating": "Rating",
+    "& Up": "& Up",
+    "clear all": "Clear all"
+  },
+  "sort product": {
+    "sort by": "Sort by",
+    "popular": "Popular",
+    "latest": "Latest",
+    "top sales": "Top sales",
+    "price": "Price",
+    "low to high": "Price: low to high",
+    "high to low": "Price: high to low"
+  },
+  "header": {
+    "sign up": "Sign Up",
+    "login": "Login",
+    "logout": "Logout",
+    "new to shopee": "New to Shopee?",
+    "have an account": "Have an account?",
+    "my account": "My account",
+    "my purchase": "My purchase"
+  }
+}

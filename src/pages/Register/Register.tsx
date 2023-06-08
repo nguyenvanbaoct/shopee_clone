@@ -12,11 +12,13 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password' | 'name'>
 const registerSchema = schema.pick(['email', 'password'])
 
 export default function Register() {
+  const { t } = useTranslation(['home'])
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigata = useNavigate()
   const {
@@ -72,7 +74,7 @@ export default function Register() {
           </div>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
-              <div className='text-2xl'>Đăng ký</div>
+              <div className='text-2xl'>{t('home:header.sign up')}</div>
               <Input
                 className='mt-8'
                 name='email'
@@ -103,13 +105,13 @@ export default function Register() {
                   isLoading={registerAccountMutation.isLoading}
                   disabled={registerAccountMutation.isLoading}
                 >
-                  ĐĂNG KÝ
+                  {t('header.sign up')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
-                <span className='text-gray-400'>Bạn đã có tài khoản?</span>
+                <span className='text-gray-400'>{t('home:header.have an account')}</span>
                 <Link className='ml-1 text-red-600' to={path.login}>
-                  Đăng nhập
+                  {t('header.login')}
                 </Link>
               </div>
             </form>
